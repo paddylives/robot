@@ -13,10 +13,11 @@ bot.onText(/\/help/, (msg,_) => {
     const chatId = msg.chat.id;
     // /kona <tag>: konachan色图
     // /avmoo <番号>: av封面图
-    // /btsow <keyword>：搜种子
+    // 
     const help = 
 `/link <http||https>：网页转图片
-/randowm_words <n>：随机考研词汇n个，n为1~15
+/btsow <keyword>：搜种子
+/random_words <n>：随机考研词汇n个，n为1~15
 发送图片：saucenao以图搜图
 `;
     bot.sendMessage(chatId, help);

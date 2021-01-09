@@ -1,5 +1,5 @@
 {
-  "name": "kiro",
+  "name": "robot",
   "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
@@ -14,8 +14,8 @@
   "scripts": {
     "test_magnet": "node",
     "start": "node index.js",
-    "pm2_start": "pm2 start index.js --name kirobot"
+    "pm2_start": "pm2 start index.js --name telegramrobot"
   },
-  "author": "4t145",
-  "description": "a telegram bot created by 4t145"
+  "author": "paddy",
+  "description": "a telegram bot created by paddy"
 }

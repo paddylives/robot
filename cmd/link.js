@@ -1,5 +1,22 @@
 var bot = require('../bot/bot');
 const phantom=require('phantom');
+var request = require('request');
+var fs = require('fs');
+var options = {
+  'method': 'POST',
+  'url': 'https://imgurl.org/upload/ftp',
+  'headers': {
+  },
+  formData: {
+    'file': {
+      'value': "",
+      'options': {
+        'filename': '',
+        'contentType': null
+      }
+    }
+  }
+};
 // 格式化时间
 function formatTime() {
     var date = new Date(),
@@ -24,19 +41,19 @@ function formatTime() {
     return t;
 }
 module.exports = (msg, match) => {
+  bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     const chatId = msg.chat.id
     const linkUrl = match[1].toString();
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
             page.open(linkUrl).then(function(status) {
                 page.property('viewportSize', { width: 1920, height: 1080 });
-                var name = '/publish/'+formatTime()+'.jpg';
-                page.render('.'+name).then(function() {
-                    bot.sendMessage(chatId, "https://telegram.solosolo.tk/base"+name);
-                    ph.exit();
-                }).catch(()=>{
-                    bot.sendMessage(chatId, "保存图片异常");
-                });
+                console.log("status"+status)
+                console.log("保存图片"+status);
+                var base64 = page.renderBase64("PNG");
+                bot.sendMessage(chatId, base64);
+                bot.sendMessage(chatId, "指令完成！");
+                ph.exit();
             }).catch(()=>{
                 bot.sendMessage(chatId, "无法访问该连接");
             });
