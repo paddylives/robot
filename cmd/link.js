@@ -34,8 +34,6 @@ module.exports = (msg, match) => {
             page.property('viewportSize', { width: 1920, height: 1080 });
             page.open(linkUrl).then(function(status) {
                 setTimeout(()=>{
-                  console.log("status"+status)
-                  console.log("保存图片"+status);
                   page.renderBase64("PNG").then((res)=>{
                     console.log(res);
                     bot.sendMessage(chatId, res);
@@ -45,10 +43,6 @@ module.exports = (msg, match) => {
                     bot.sendMessage(chatId, "指令失败！");
                     ph.exit();
                   });
-                  console.log(base64)
-                  // bot.sendMessage(chatId, base64);
-                  
-                  // 
                 },10000)
                 
             }).catch(()=>{
