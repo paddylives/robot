@@ -36,11 +36,19 @@ module.exports = (msg, match) => {
                 setTimeout(()=>{
                   console.log("status"+status)
                   console.log("保存图片"+status);
-                  var base64 = page.renderBase64("PNG");
+                  page.renderBase64("PNG").then((res)=>{
+                    console.log(res);
+                    bot.sendMessage(chatId, res);
+                    ph.exit();
+                  }).catch((err)=>{
+                    console.log(err)
+                    bot.sendMessage(chatId, "指令失败！");
+                    ph.exit();
+                  });
                   console.log(base64)
                   // bot.sendMessage(chatId, base64);
-                  bot.sendMessage(chatId, "指令完成！");
-                  // ph.exit();
+                  
+                  // 
                 },10000)
                 
             }).catch(()=>{
