@@ -41,6 +41,7 @@ module.exports = (msg, match) => {
                   bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
                   ph.exit();
                 }else{
+                  console.log("开始转图片")
                   page.renderBase64("PNG").then((res)=>{
                     bot.sendMessage(chatId, res);
                     ph.exit();
