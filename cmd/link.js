@@ -30,18 +30,17 @@ module.exports = (msg, match) => {
     console.log(msg)
     const linkUrl = msg.text;
     console.log(linkUrl)
-    bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
+    bot.sendMessage(chatId, "收到指令，开始访问URL");
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
             page.open(linkUrl).then(function(status) {
-              console.log("状态："+status);
               page.property('viewportSize', { width: 1920, height: 1080 });
-              setTimeout(() => {
-                if(status === "fail"){
-                  bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
-                  ph.exit();
-                }else{
-                  console.log("开始转图片")
+              if(status === "fail"){
+                bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
+                ph.exit();
+              }else{
+                bot.sendMessage(chatId, "访问成功，十秒后开始转图片");
+                setTimeout(() => {
                   var name = '/publish/'+formatTime()+'.jpg';
                   page.render('.'+name).then(function() {
                       bot.sendMessage(chatId, "https://telegram.solosolo.tk/base"+name);
@@ -51,8 +50,9 @@ module.exports = (msg, match) => {
                       bot.sendMessage(chatId, "保存图片异常");
                       ph.exit();
                   });
-                }
-              }, 10000);
+                }, 10000);
+              }
+              
             });
         });
     });
