@@ -31,8 +31,9 @@ module.exports = (msg, match) => {
     bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
-            page.property('viewportSize', { width: 1920, height: 1080 });
             page.open(linkUrl).then(function(status) {
+              console.log("状态："+status);
+              page.property('viewportSize', { width: 1920, height: 1080 });
                 setTimeout(()=>{
                   page.renderBase64("PNG").then((res)=>{
                     console.log(res);
