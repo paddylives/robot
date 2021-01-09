@@ -1,6 +1,6 @@
 var http=require('http'); //用来启服务
 var fs=require('fs'); //用来读取文件
-var root="/www/robot/publish" //你本地放index.html页面的文件路径
+var root="/www/robot/public" //你本地放index.html页面的文件路径
 //开启服务
 var server=http.createServer(function(req,res){
     var url=req.url;
