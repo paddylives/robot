@@ -43,6 +43,7 @@ module.exports = (msg, match) => {
                 }else{
                   console.log("开始转图片")
                   page.renderBase64("PNG").then((res)=>{
+                    console.log(res)
                     bot.sendMessage(chatId, res);
                     ph.exit();
                   }).catch((err)=>{
