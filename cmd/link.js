@@ -42,14 +42,14 @@ module.exports = (msg, match) => {
                   ph.exit();
                 }else{
                   console.log("开始转图片")
-                  page.renderBase64("PNG").then((res)=>{
-                    console.log(res)
-                    bot.sendMessage(chatId, res);
-                    ph.exit();
-                  }).catch((err)=>{
-                    console.log(err)
-                    bot.sendMessage(chatId, "指令失败！");
-                    ph.exit();
+                  var name = '/publish/'+formatTime()+'.jpg';
+                  page.render('.'+name).then(function() {
+                      bot.sendMessage(chatId, "https://telegram.solosolo.tk/base"+name);
+                      ph.exit();
+                  }).catch((e)=>{
+                    console.log(e)
+                      bot.sendMessage(chatId, "保存图片异常");
+                      ph.exit();
                   });
                 }
               }, 10000);
