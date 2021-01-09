@@ -25,10 +25,10 @@ function formatTime() {
     return t;
 }
 module.exports = (msg, match) => {
-  console.log("进入进入")
-  bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
+    console.log("进入进入");
     const chatId = msg.chat.id
     const linkUrl = match[1].toString();
+    bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
             page.open(linkUrl).then(function(status) {
