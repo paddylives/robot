@@ -31,15 +31,16 @@ module.exports = (msg, match) => {
     bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
+            page.property('viewportSize', { width: 1920, height: 1080 });
             page.open(linkUrl).then(function(status) {
-                page.property('viewportSize', { width: 1920, height: 1080 });
                 setTimeout(()=>{
                   console.log("status"+status)
                   console.log("保存图片"+status);
                   var base64 = page.renderBase64("PNG");
-                  bot.sendMessage(chatId, base64);
+                  console.log(base64)
+                  // bot.sendMessage(chatId, base64);
                   bot.sendMessage(chatId, "指令完成！");
-                  ph.exit();
+                  // ph.exit();
                 },10000)
                 
             }).catch(()=>{
