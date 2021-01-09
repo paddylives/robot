@@ -1,22 +1,6 @@
 var bot = require('../bot/bot');
 const phantom=require('phantom');
-var request = require('request');
 var fs = require('fs');
-var options = {
-  'method': 'POST',
-  'url': 'https://imgurl.org/upload/ftp',
-  'headers': {
-  },
-  formData: {
-    'file': {
-      'value': "",
-      'options': {
-        'filename': '',
-        'contentType': null
-      }
-    }
-  }
-};
 // 格式化时间
 function formatTime() {
     var date = new Date(),
@@ -41,6 +25,7 @@ function formatTime() {
     return t;
 }
 module.exports = (msg, match) => {
+  console.log("进入进入")
   bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     const chatId = msg.chat.id
     const linkUrl = match[1].toString();
