@@ -28,7 +28,7 @@ module.exports = (msg, match) => {
     console.log("进入进入");
     const chatId = msg.chat.id
     console.log(msg)
-    const linkUrl = match[1].toString();
+    const linkUrl = msg.text;
     console.log(linkUrl)
     bot.sendMessage(chatId, "收到指令，即将执行，预计10s左右");
     phantom.create().then(function(ph) {
@@ -37,7 +37,7 @@ module.exports = (msg, match) => {
               console.log("状态："+status);
               page.property('viewportSize', { width: 1920, height: 1080 });
               setTimeout(() => {
-                if(status ==- "fail"){
+                if(status === "fail"){
                   bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
                   ph.exit();
                 }else{

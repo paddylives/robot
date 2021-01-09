@@ -21,4 +21,4 @@ bot.onText(/\/help/, (msg,_) => {
 发送图片：saucenao以图搜图
 `;
     bot.sendMessage(chatId, help);
-})
+});
