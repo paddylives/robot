@@ -33,12 +33,15 @@ module.exports = (msg, match) => {
         ph.createPage().then(function(page) {
             page.open(linkUrl).then(function(status) {
                 page.property('viewportSize', { width: 1920, height: 1080 });
-                console.log("status"+status)
-                console.log("保存图片"+status);
-                var base64 = page.renderBase64("PNG");
-                bot.sendMessage(chatId, base64);
-                bot.sendMessage(chatId, "指令完成！");
-                ph.exit();
+                setTimeout(()=>{
+                  console.log("status"+status)
+                  console.log("保存图片"+status);
+                  var base64 = page.renderBase64("PNG");
+                  bot.sendMessage(chatId, base64);
+                  bot.sendMessage(chatId, "指令完成！");
+                  ph.exit();
+                },10000)
+                
             }).catch(()=>{
                 bot.sendMessage(chatId, "无法访问该连接");
             });
