@@ -58,37 +58,34 @@ module.exports = (msg) => {
     phantom.create().then(function(ph) {
         ph.createPage().then(function(page) {
             page.open(linkUrl).then(function(status) {
-              page.property('viewportSize', { width: 1920, height: 1080 });
-              if(status === "fail"){
-                bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
-                ph.exit();
-              }else{
-                bot.sendMessage(chatId, "访问成功，十秒后开始转图片");
-                setTimeout(() => {
-                  var name = '/publish/'+formatTime()+'.jpg';
-                  page.render('.'+name).then(function() {
-                    options.formData.smfile.value = fs.createReadStream('.'+name)
-                    options.formData.smfile.options.filename = '.'+name;
-                    request(options, function (error, response) {
-                      if (error){
-                        bot.sendMessage(chatId, "转换图片失败，上传异常");
-                        return ph.exit();
-                      };
-                      if(response.body){
-                        var result = JSON.parse(response.body);
-                        bot.sendMessage(chatId, "转换图片成功：");
-                        bot.sendMessage(chatId, result.images||result.data.url);
-                      };
-                      ph.exit();
-                    });
-                  }).catch((e)=>{
-                    console.log(e)
-                      bot.sendMessage(chatId, "保存图片异常");
-                      ph.exit();
+              setTimeout(() => {
+                console.log("状态："+status)
+                if(status === "fail"){
+                  bot.sendMessage(chatId, "无法访问该连接，请核实："+linkUrl);
+                  return ph.exit();
+                }
+                var name = '/publish/'+formatTime()+'.jpg';
+                page.render('.'+name).then(function() {
+                  options.formData.smfile.value = fs.createReadStream('.'+name)
+                  options.formData.smfile.options.filename = '.'+name;
+                  request(options, function (error, response) {
+                    if (error){
+                      bot.sendMessage(chatId, "转换图片失败，上传异常");
+                      return ph.exit();
+                    };
+                    if(response.body){
+                      var result = JSON.parse(response.body);
+                      bot.sendMessage(chatId, "转换图片成功：");
+                      bot.sendMessage(chatId, result.images||result.data.url);
+                    };
+                    ph.exit();
                   });
-                }, 10000);
-              }
-              
+                }).catch((e)=>{
+                  console.log(e)
+                    bot.sendMessage(chatId, "保存图片异常");
+                    ph.exit();
+                });
+              }, 10000);
             });
         });
     });
