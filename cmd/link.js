@@ -1,6 +1,7 @@
 var bot = require('../bot/bot');
 const phantom=require('phantom');
 var fs = require('fs');
+var request = require('request');
 // 格式化时间
 function formatTime() {
     var date = new Date(),
@@ -24,7 +25,30 @@ function formatTime() {
     var t = Y + m + d + "-" + H + i;
     return t;
 }
-module.exports = (msg, match) => {
+
+
+var options = {
+  'method': 'POST',
+  'url': 'https://sm.ms/api/v2/upload',
+  'headers': {
+    'Authorization': '5zLoPZa19XKWxfAYH5VmARIrpOKONS0C',
+    'Cookie': 'PHPSESSID=qhaoevt8ma64h28mnduhkol9s0',
+    'User-Agent': 'PostmanRuntime/7.26.8'
+  },
+  formData: {
+    'smfile': {
+      'value': "",
+      'options': {
+        'filename': "",
+        'contentType': null
+      }
+    }
+  }
+};
+
+
+
+module.exports = (msg) => {
     console.log("进入进入");
     const chatId = msg.chat.id
     console.log(msg)
@@ -43,8 +67,20 @@ module.exports = (msg, match) => {
                 setTimeout(() => {
                   var name = '/publish/'+formatTime()+'.jpg';
                   page.render('.'+name).then(function() {
-                      bot.sendMessage(chatId, "https://telegram.solosolo.tk/base"+name);
+                    options.formData.smfile.value = fs.createReadStream('.'+name)
+                    options.formData.smfile.options.filename = '.'+name;
+                    request(options, function (error, response) {
+                      if (error){
+                        bot.sendMessage(chatId, "转换图片失败，上传异常");
+                        return ph.exit();
+                      };
+                      if(response.body){
+                        var result = JSON.parse(response.body);
+                        bot.sendMessage(chatId, "转换图片成功：");
+                        bot.sendMessage(chatId, result.images||result.data.url);
+                      };
                       ph.exit();
+                    });
                   }).catch((e)=>{
                     console.log(e)
                       bot.sendMessage(chatId, "保存图片异常");
